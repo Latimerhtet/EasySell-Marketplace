@@ -1,10 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 const Main = () => {
   return (
-    <section>
-      <p className="text-xl text-fuchsia-600">Easy-Sell.io</p>
-      <Outlet />
+    <section className="flex flex-col items-center">
+      <Navbar />
+      <div className="mt-20">
+        <Outlet />
+      </div>
     </section>
   );
 };

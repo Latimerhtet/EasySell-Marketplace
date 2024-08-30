@@ -5,22 +5,30 @@ import {
   RedEnvelopeOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register, login } from "../API/authAPI";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/Slices/userSlice";
 const FormSample = ({ isLoginPage }) => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // logging in or registering a user
   const onFinish = async (values) => {
+    console.log(values);
     try {
       if (isLoginPage) {
         const data = await login(values);
         if (data.isSuccess) {
           message.success("Login Successful!");
+          localStorage.setItem("token", data.token);
+          dispatch(setUser(data.token));
+          navigate("/");
         }
       } else {
         const data = await register(values);
         if (data.isSuccess) {
           message.success("Registration Successful!");
+          navigate("/login");
         }
       }
     } catch (error) {
@@ -36,7 +44,7 @@ const FormSample = ({ isLoginPage }) => {
   // messages to show when processing and finished
 
   return (
-    <section className="w-screen h-screen flex  justify-center items-center ">
+    <section className="w-screen h-full flex  justify-center  ">
       <Form
         layout="vertical"
         name="register"

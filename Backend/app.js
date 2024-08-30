@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 // importing routes
 const authRoutes = require("./Routes/auth");
+const productRoutes = require("./Routes/product");
 const app = express();
 const dotenv = require("dotenv").config();
 
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
 // authRoutes
 app.use(authRoutes);
+app.use(productRoutes);
 
 // connecting to database and running server
 mongoose

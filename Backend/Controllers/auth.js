@@ -53,12 +53,26 @@ exports.login = async (req, res, next) => {
       throw new Error("Invalid user credentials");
     }
     const token = jwt.sign(
-      { email, name: existedUser.name },
+      { email, name: existedUser.name, userId: existedUser._id },
       process.env.JWT_KEY,
       { expiresIn: "1d" }
     );
     return res.status(200).json({ isSuccess: true, token, user: existedUser });
   } catch (err) {
     return res.status(400).json({ isSuccess: false, message: err.message });
+  }
+};
+
+exports.checkUserAuth = async (req, res, next) => {
+  try {
+    const userDoc = await User.findById(req.userId).select("name email role");
+    if (!userDoc) {
+      throw new Error("User is not authorized");
+    }
+    res
+      .status(200)
+      .json({ isSuccess: true, message: "User is authorized", user: userDoc });
+  } catch (error) {
+    return res.status(401).json({ isSuccess: false, message: error.message });
   }
 };

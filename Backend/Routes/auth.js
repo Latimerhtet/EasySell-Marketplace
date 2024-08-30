@@ -2,6 +2,7 @@ const express = require("express");
 const { body } = require("express-validator");
 const router = express.Router();
 const authControllers = require("../Controllers/auth");
+const authMiddleware = require("../middlewares/auth");
 // creating new user
 // POST /register
 router.post(
@@ -39,4 +40,6 @@ router.post(
   ],
   authControllers.login
 );
+
+router.get("/status", authMiddleware, authControllers.checkUserAuth);
 module.exports = router;
