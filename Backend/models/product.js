@@ -31,6 +31,9 @@ const productSchema = new Schema(
       ref: "User",
       required: true,
     },
+    images: {
+      type: [String],
+    },
     status: {
       type: String,
       default: "pending",

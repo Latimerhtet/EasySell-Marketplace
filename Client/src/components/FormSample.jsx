@@ -1,20 +1,32 @@
-import { Button, Checkbox, Flex, Form, Input, Timeline, message } from "antd";
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Form,
+  Input,
+  Space,
+  Timeline,
+  message,
+} from "antd";
 import {
   LockOutlined,
   UserOutlined,
   RedEnvelopeOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register, login } from "../API/authAPI";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/Slices/userSlice";
+import { setLoader } from "../store/Slices/loaderSlice";
 const FormSample = ({ isLoginPage }) => {
   const dispatch = useDispatch();
+  const { isProcessing } = useSelector((state) => state.user.loader);
   const navigate = useNavigate();
   // logging in or registering a user
   const onFinish = async (values) => {
-    console.log(values);
+    dispatch(setLoader(true));
     try {
       if (isLoginPage) {
         const data = await login(values);
@@ -39,6 +51,7 @@ const FormSample = ({ isLoginPage }) => {
       }
       console.log(error.message);
     }
+    dispatch(setLoader(false));
   };
 
   // messages to show when processing and finished
@@ -128,10 +141,16 @@ const FormSample = ({ isLoginPage }) => {
           <button
             type="submit"
             className="w-full block p-2 text-center text-[#5052b1] border-2 border-[#5052b1] rounded-lg hover:bg-[#5052b1] hover:text-white"
+            disabled={isProcessing}
           >
-            {isLoginPage ? "Login" : "Register"}
+            <span> {isLoginPage ? "Login" : "Register"} </span>
+            {isProcessing && (
+              <Space>
+                <SyncOutlined spin />
+              </Space>
+            )}
           </button>
-          or{" "}
+          or
           <Link to={isLoginPage ? "/register" : "/login"}>
             {isLoginPage ? "Register now!" : "Login now!"}
           </Link>

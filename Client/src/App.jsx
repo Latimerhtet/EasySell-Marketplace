@@ -5,6 +5,7 @@ import Main from "./layouts/Main";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile/Profile";
 import AuthProvider from "./Providers/AuthProvider";
+import Admin from "./pages/admin/Admin";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -19,6 +20,14 @@ const App = () => {
           element: (
             <AuthProvider>
               <Profile />
+            </AuthProvider>
+          ),
+        },
+        {
+          path: "/admin",
+          element: (
+            <AuthProvider>
+              <Admin />
             </AuthProvider>
           ),
         },

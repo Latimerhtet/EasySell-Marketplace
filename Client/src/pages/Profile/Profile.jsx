@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 import Products from "./Products";
-import AddProduct from "./AddProduct";
+import ManageProduct from "./ManageProduct";
 import { useNavigate } from "react-router-dom";
 import General from "./General";
 import { getAllproducts } from "../../API/productAPI";
@@ -9,12 +9,14 @@ const Profile = () => {
   const [activeTapKey, setActiveTapKey] = useState("1");
   const [sellerProducts, setSellerProducts] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [uploadMode, setUploadMode] = useState(false);
   const [editProductId, setEditProductId] = useState("");
+
   const getProducts = async () => {
     try {
       const products = await getAllproducts();
-      console.log(products);
-      if (products?.isSuccess) {
+      // console.log(products);
+      if (products.isSuccess) {
         setSellerProducts(products.products);
       } else {
         throw new Error(products?.message);
@@ -24,8 +26,12 @@ const Profile = () => {
     }
   };
   useEffect(() => {
+    if (activeTapKey !== "3") {
+      setEditMode(false);
+      setEditProductId(null);
+    }
     getProducts();
-  }, []);
+  }, [activeTapKey]);
   const items = [
     {
       key: "1",
@@ -37,44 +43,46 @@ const Profile = () => {
           setEditMode={setEditMode}
           setActiveTapKey={setActiveTapKey}
           setEditProductId={setEditProductId}
+          setUploadMode={setUploadMode}
         />
       ),
     },
     {
       key: "2",
-      label: "Profile",
-      children: "Content of Tab Pane 2",
+      label: "General",
+      children: <General />,
     },
     {
       key: "3",
       label: "Manage Product",
       children: (
-        <AddProduct
+        <ManageProduct
           setActiveTapKey={setActiveTapKey}
           getProducts={getProducts}
           editMode={editMode}
           editProductId={editProductId}
+          activeTapKey={activeTapKey}
+          uploadMode={uploadMode}
+          setUploadMode={setUploadMode}
         />
       ),
     },
     {
       key: "4",
-      label: "General",
-      children: <General />,
+      label: "Notification",
+      children: <p>Notifications</p>,
     },
   ];
 
   const activeKeyChangeEventHandler = (key) => {
-    setEditMode(false);
     setActiveTapKey(key);
   };
 
   return (
-    <section className="lg:w-[900px] flex justify-start">
+    <section className="lg:w-[950px] sm:w-[400px]  flex justify-start">
       <Tabs
         activeKey={activeTapKey}
         onChange={(key) => activeKeyChangeEventHandler(key)}
-        centered
         items={items}
         tabPosition="left"
         style={{

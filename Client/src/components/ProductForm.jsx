@@ -1,9 +1,11 @@
 import { Checkbox, Col, Form, Input, Row, Select, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useState } from "react";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import { addProduct, getOldProduct, updateProduct } from "../../API/productAPI";
-const AddProduct = ({
+import { PlusCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import { addProduct, getOldProduct, updateProduct } from "../API/productAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoader } from "../store/Slices/loaderSlice";
+const ProductForm = ({
   setActiveTapKey,
   getProducts,
   editMode,
@@ -12,17 +14,18 @@ const AddProduct = ({
   const [form] = Form.useForm();
   const [seller, setSeller] = useState(null);
   const [productId, setProductId] = useState(null);
+  const { isProcessing } = useSelector((state) => state.user.loader);
+  const dispatch = useDispatch();
   // options for checkBox
   const checkBoxOptions = [
     { label: "Accessories", value: "Accessories" },
     { label: "Vouncher", value: "Vouncher" },
     { label: "Warrenty", value: "Warrenty" },
   ];
-  const [submitting, setSubmitting] = useState(false);
 
   // handling addProduct and editProduct
   const handleSellProduct = async (values) => {
-    setSubmitting(true);
+    dispatch(setLoader(true));
     try {
       let response;
       if (editMode) {
@@ -34,7 +37,6 @@ const AddProduct = ({
         response = await addProduct(values);
       }
       if (!response?.isSuccess) {
-        setSubmitting(false);
         throw new Error("Action not successful!");
       } else {
         message.success(response.message);
@@ -42,11 +44,11 @@ const AddProduct = ({
         setActiveTapKey("1");
         form.resetFields();
       }
-      setSubmitting(false);
     } catch (error) {
       console.log(error);
       message.error(error.message);
     }
+    dispatch(setLoader(false));
   };
 
   // getting the old product to edit
@@ -210,18 +212,18 @@ const AddProduct = ({
         </Form.Item>
         <button
           type="submit"
-          className={`flex gap-2 items-center text-white p-2 bg-[#5052b1] rounded-md productAddButton ${
-            submitting && `disabled`
-          }`}
+          className={`flex gap-2 items-center text-white p-2 bg-[#5052b1] rounded-md productAddButton `}
+          disabled={isProcessing}
         >
           {!editMode && <PlusCircleOutlined className="" />}
           <span className="">
             {editMode ? "Update product" : "Post  product"}
           </span>
+          {isProcessing && <SyncOutlined spin />}
         </button>
       </Form>
     </section>
   );
 };
 
-export default AddProduct;
+export default ProductForm;
