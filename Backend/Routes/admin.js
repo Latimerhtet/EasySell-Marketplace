@@ -12,4 +12,26 @@ router.get(
   adminMiddleware,
   adminControllers.getAllProducts
 );
+// POST /setStatus
+router.post(
+  "/setStatus/:id",
+  authMiddleware,
+  adminMiddleware,
+  adminControllers.setProductStatus
+);
+// GET / users
+router.get(
+  "/users",
+  authMiddleware,
+  adminMiddleware,
+  adminControllers.getAllUsers
+);
+
+// POST /setUserStatus
+router.post(
+  "/setUserStatus/:id",
+  authMiddleware,
+  adminMiddleware,
+  adminControllers.setUserStatus
+);
 module.exports = router;

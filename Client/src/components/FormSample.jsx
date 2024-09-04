@@ -30,11 +30,14 @@ const FormSample = ({ isLoginPage }) => {
     try {
       if (isLoginPage) {
         const data = await login(values);
+
         if (data.isSuccess) {
-          message.success("Login Successful!");
+          dispatch(setUser(data));
           localStorage.setItem("token", data.token);
-          dispatch(setUser(data.token));
+          message.success("Login Successful!");
           navigate("/");
+        } else {
+          throw new Error(data.message);
         }
       } else {
         const data = await register(values);
@@ -45,9 +48,9 @@ const FormSample = ({ isLoginPage }) => {
       }
     } catch (error) {
       if (!isLoginPage) {
-        message.error("User already existed!");
+        message.error(error.message);
       } else {
-        message.error("Invalid User credentials");
+        message.error(error.message);
       }
       console.log(error.message);
     }

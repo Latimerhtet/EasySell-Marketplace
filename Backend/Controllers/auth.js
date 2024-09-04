@@ -41,17 +41,24 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const existedUser = await User.findOne({ email }).select(
-      "name email password"
+      "name email password role status"
     );
-
+    console.log(existedUser);
+    // is user already existed
     if (!existedUser) {
       throw new Error("Invalid user credentials");
     }
+    if (existedUser.status === "banned") {
+      throw new Error("Your account is banned!");
+    }
+
+    // does user password match
     const isValidate = bcrypt.compareSync(password, existedUser.password);
 
     if (!isValidate) {
       throw new Error("Invalid user credentials");
     }
+
     const token = jwt.sign(
       { email, name: existedUser.name, userId: existedUser._id },
       process.env.JWT_KEY,
@@ -59,7 +66,7 @@ exports.login = async (req, res, next) => {
     );
     return res.status(200).json({ isSuccess: true, token, user: existedUser });
   } catch (err) {
-    return res.status(400).json({ isSuccess: false, message: err.message });
+    return res.status(422).json({ isSuccess: false, message: err.message });
   }
 };
 

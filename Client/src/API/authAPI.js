@@ -14,11 +14,13 @@ export const register = async (payload) => {
 export const login = async (payload) => {
   try {
     const response = await axiosInstance.post("/login", payload);
-    // console.log(response);
+    console.log(response);
+
     // console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error.message);
+    console.log(error.response.data);
+    return error.response.data;
   }
 };
 

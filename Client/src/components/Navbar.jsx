@@ -15,9 +15,9 @@ const Navbar = () => {
         <NavLink className="p-2  " to={"/"}>
           Home
         </NavLink>
-        {user.user?._id || user.user ? (
+        {user.user ? (
           <>
-            {user.user.role === "user" ? (
+            {user.user.role === "user" || user.user.user?.role === "user" ? (
               <NavLink className="p-2 flex gap-1 items-center" to={"/profile"}>
                 Profile
               </NavLink>

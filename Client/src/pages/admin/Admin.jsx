@@ -36,7 +36,9 @@ const Admin = () => {
     {
       key: "1",
       label: "Manage Products",
-      children: <Products products={products} />,
+      children: (
+        <Products products={products} getAllProducts={getAllProductsForAdmin} />
+      ),
     },
 
     {

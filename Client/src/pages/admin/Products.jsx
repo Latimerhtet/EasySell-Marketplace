@@ -1,7 +1,34 @@
 import moment from "moment";
 import React from "react";
+import { setProductStatus } from "../../API/adminAPI";
+import { message } from "antd";
 
-const Products = ({ products }) => {
+const Products = ({ products, getAllProducts }) => {
+  const statusHandler = async (productId, productStatus) => {
+    try {
+      const response = await setProductStatus({
+        productId,
+        productStatus,
+      });
+      if (!response.isSuccess) {
+        throw new Error("Something went wrong!");
+      } else {
+        getAllProducts();
+        message.success(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  const approveHandler = async (productId) => {
+    await statusHandler(productId, "approved");
+  };
+  const rejectHandler = async (productId) => {
+    await statusHandler(productId, "rejected");
+  };
+  const rollbackHandler = async (productId) => {
+    await statusHandler(productId, "pending");
+  };
   return (
     <section>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -49,16 +76,58 @@ const Products = ({ products }) => {
                     <td className="px-6 py-4">
                       {moment(product.createdAt).format("L")}
                     </td>
-                    <td className={`px-6 py-4 font-bold `}>
-                      {product.status === "pending" ? (
-                        <span className="text-white bg-yellow-600 p-1 rounded-md">
+                    <td className={`px-6 py-4  `}>
+                      {product.status === "pending" && (
+                        <span className="text-white bg-yellow-600 p-1 rounded-md text-md">
                           Pending
                         </span>
-                      ) : (
-                        <span className="text-white bg-green-700 p-1 rounded-md">
+                      )}{" "}
+                      {product.status === "approved" && (
+                        <span className="text-white bg-green-700 p-1 rounded-md text-md">
                           Approved
                         </span>
                       )}
+                      {product.status === "rejected" && (
+                        <span className="text-white bg-red-700 p-1 rounded-md text-md">
+                          Rejected
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-4">
+                      <div className="flex gap-3">
+                        {product.status !== "pending" && (
+                          <button
+                            onClick={() => rollbackHandler(product._id)}
+                            className="font-medium text-md text-blue-600 dark:text-blue-500 hover:underline"
+                          >
+                            Rollback
+                          </button>
+                        )}
+                        {product.status === "pending" && (
+                          <button
+                            onClick={() => approveHandler(product._id)}
+                            className="font-medium text-md text-fuchsia-500 dark:text-blue-500 hover:underline"
+                          >
+                            approve
+                          </button>
+                        )}
+                        {product.status !== "rejected" && (
+                          <button
+                            onClick={() => rejectHandler(product._id)}
+                            className="font-medium text-md text-red-600 dark:text-blue-500 hover:underline "
+                          >
+                            reject
+                          </button>
+                        )}
+                        {/* {product.status === "rejected" && (
+                          <button
+                            onClick={() => rejectHandler(product._id)}
+                            className="font-medium text-md text-red-600 dark:text-blue-500 hover:underline "
+                          >
+                            reject
+                          </button>
+                        )} */}
+                      </div>
                     </td>
                   </tr>
                 ))}
