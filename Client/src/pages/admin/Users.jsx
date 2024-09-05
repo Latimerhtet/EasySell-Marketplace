@@ -2,21 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { getAllUsers, setUserStatus } from "../../API/adminAPI";
 import { message } from "antd";
-const Users = () => {
-  const [users, setUsers] = useState([]);
-
-  const getAllUsersForAdmin = async () => {
-    try {
-      const response = await getAllUsers();
-      if (!response.isSuccess) {
-        throw new Error("Users data cannot fetch");
-      } else {
-        setUsers(response.users);
-      }
-    } catch (error) {
-      message.error(error.message);
-    }
-  };
+const Users = ({ users, getAllUsersForAdmin }) => {
   useEffect(() => {
     getAllUsersForAdmin();
   }, []);
@@ -106,7 +92,7 @@ const Users = () => {
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex gap-3">
-                        {user.status === "active" && (
+                        {user.status === "active" && user.role !== "admin" && (
                           <button
                             onClick={() => banHandler(user._id)}
                             className="font-medium text-md text-red-600 dark:text-blue-500 hover:underline"

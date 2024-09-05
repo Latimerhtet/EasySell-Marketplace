@@ -1,4 +1,22 @@
 @tailwind base;
+:root {
+  --primary: rebeccapurple;
+  --secondary: cornflowerblue;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #5052b1;
+  border-radius: 5px;
+  outline: none;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -8,6 +26,9 @@
   margin: 0;
   box-sizing: border-box;
   /* color: #5052b1; */
+}
+body {
+  padding-bottom: 10px !important;
 }
 a.active {
   padding: 8px;
