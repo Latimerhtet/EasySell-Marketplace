@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { UserIcon } from "@heroicons/react/16/solid";
 import { useSelector } from "react-redux";
+import { BookmarkIcon } from "@heroicons/react/24/solid";
 const Navbar = () => {
   const user = useSelector((state) => state.user.user);
 
@@ -11,12 +12,9 @@ const Navbar = () => {
       <Link to={"/"} className="text-2xl font-semibold text-[#5052b1]">
         Zayy Sine
       </Link>
-      <div className="flex gap-3 items-center text-white">
+      <div className="flex gap-3 items-center ">
         <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/"}>
           Home
-        </NavLink>
-        <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/about"}>
-          About
         </NavLink>
         <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/contact"}>
           Contact
@@ -24,8 +22,16 @@ const Navbar = () => {
         <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/QandA"}>
           Q & A
         </NavLink>
+      </div>
+      <div className="flex gap-3 items-center text-white">
         {user.user ? (
           <>
+            <NavLink
+              className="p-2 shadow-xl text-[#5052b1]"
+              to={"/savedProducts"}
+            >
+              <BookmarkIcon className="w-5" />
+            </NavLink>
             {user.user.role === "user" || user.user.user?.role === "user" ? (
               <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/profile"}>
                 Profile

@@ -79,3 +79,21 @@ export const deleteSavedImages = async (payload) => {
     console.log(error.message);
   }
 };
+
+export const saveProducts = async (id) => {
+  try {
+    const response = await axiosInstance.post(`/save-product/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getSavedProducts = async () => {
+  try {
+    const response = await axiosInstance.get("/getSavedProducts");
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};

@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const Product = require("../models/product");
+const SavedProducts = require("../models/SavedProducts");
 const { v2: cloudinary } = require("cloudinary");
 require("dotenv").config();
 
@@ -229,5 +230,42 @@ exports.deleteProductImages = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({ isSuccess: false, message: error.message });
+  }
+};
+
+// saving user's favourite product
+exports.saveProducts = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user_id = req.userId;
+    await SavedProducts.create({ product_id: id, user_id });
+    res.status(201).json({ isSuccess: true, message: " Product is saved!" });
+  } catch (error) {
+    return res.status(400).json({ isSuccess: false, message: error.message });
+  }
+};
+
+// getting save products
+exports.getSavedProducts = async (req, res) => {
+  try {
+    const user_id = req.userId;
+    const productsDoc = await SavedProducts.find({ user_id })
+      .populate({ path: "user_id", select: "name" })
+      .populate({
+        path: "product_id",
+        select: "name description category price images",
+      });
+    if (!productsDoc) {
+      throw new Error("There is no products saved!");
+    }
+    console.log(productsDoc);
+    res.status(200).json({
+      isSuccess: true,
+      message: "Saved Products sent",
+      products: productsDoc,
+    });
+  } catch (error) {
+    return res.status(400).json({ isSuccess: false, message: error.message });
+    d;
   }
 };

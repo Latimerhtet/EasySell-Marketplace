@@ -6,11 +6,11 @@ import Register from "./pages/auth/Register";
 import Profile from "./pages/Profile/Profile";
 import AuthProvider from "./Providers/AuthProvider";
 import Admin from "./pages/admin/Admin";
-import About from "./pages/About";
 import Contact from "./pages/Contact";
 import QuestionsAndAnswer from "./pages/Q&A";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
+import SavedProducts from "./pages/SavedProducts/SavedProducts";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -37,9 +37,16 @@ const App = () => {
           ),
         },
         { path: "/productDetail/:id", element: <ProductDetail /> },
-        { path: "/about", element: <About /> },
         { path: "/contact", element: <Contact /> },
         { path: "/QandA", element: <QuestionsAndAnswer /> },
+        {
+          path: "/savedProducts",
+          element: (
+            <AuthProvider>
+              <SavedProducts />
+            </AuthProvider>
+          ),
+        },
       ],
     },
   ]);

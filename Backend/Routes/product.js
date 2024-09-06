@@ -77,4 +77,17 @@ router.delete(
   authMiddleware,
   productControllers.deleteProductImages
 );
+
+// POST / saving favourite product of a user
+router.post(
+  "/save-product/:id",
+  authMiddleware,
+  productControllers.saveProducts
+);
+
+router.get(
+  "/getSavedProducts",
+  authMiddleware,
+  productControllers.getSavedProducts
+);
 module.exports = router;
