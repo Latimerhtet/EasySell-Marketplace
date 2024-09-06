@@ -7,32 +7,41 @@ const Navbar = () => {
   const user = useSelector((state) => state.user.user);
 
   return (
-    <nav className="w-4/5 flex justify-between items-center p-3  bg-[#5052b1]  fixed top-0 z-20">
-      <Link to={"/"} className="text-2xl font-semibold text-white">
-        Easy-Sell.io
+    <nav className="w-full flex justify-between items-center py-3 px-10 bg-slate-100  border-b-[1px] shadow-lg fixed top-0 z-20">
+      <Link to={"/"} className="text-2xl font-semibold text-[#5052b1]">
+        Zayy Sine
       </Link>
       <div className="flex gap-3 items-center text-white">
-        <NavLink className="p-2  " to={"/"}>
+        <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/"}>
           Home
+        </NavLink>
+        <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/about"}>
+          About
+        </NavLink>
+        <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/contact"}>
+          Contact
+        </NavLink>
+        <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/QandA"}>
+          Q & A
         </NavLink>
         {user.user ? (
           <>
             {user.user.role === "user" || user.user.user?.role === "user" ? (
-              <NavLink className="p-2 flex gap-1 items-center" to={"/profile"}>
+              <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/profile"}>
                 Profile
               </NavLink>
             ) : (
-              <NavLink className="p-2 flex gap-1 items-center" to={"/admin"}>
+              <NavLink className="p-2 shadow-xl text-[#5052b1]" to={"/admin"}>
                 Admin Panel
               </NavLink>
             )}
           </>
         ) : (
           <>
-            <NavLink className="p-2 " to={"/login"}>
+            <NavLink className="p-2 shadow-xl text-[#5052b1] " to={"/login"}>
               Login
             </NavLink>
-            <NavLink className="p-2 " to={"/register"}>
+            <NavLink className="p-2 shadow-xl text-[#5052b1] " to={"/register"}>
               Register
             </NavLink>
           </>

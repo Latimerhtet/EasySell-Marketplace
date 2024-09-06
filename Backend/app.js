@@ -7,6 +7,7 @@ const multer = require("multer");
 const authRoutes = require("./Routes/auth");
 const productRoutes = require("./Routes/product");
 const adminRoutes = require("./Routes/admin");
+const publicRoutes = require("./Routes/public");
 const app = express();
 const dotenv = require("dotenv").config();
 
@@ -39,6 +40,7 @@ app.use(
 app.use(authRoutes);
 app.use(productRoutes);
 app.use("/admin", adminRoutes);
+app.use("/api", publicRoutes);
 // connecting to database and running server
 mongoose
   .connect(process.env.MONGODB_URL)

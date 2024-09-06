@@ -102,7 +102,7 @@ const Admin = () => {
     setActiveTapKey(key);
   };
   return (
-    <section className="  lg:w-[900px] sm:w-[350px]  flex justify-start">
+    <section className="  w-[70vw]   flex justify-center">
       <Tabs
         activeKey={activeTapKey}
         onChange={(key) => activeKeyChangeEventHandler(key)}

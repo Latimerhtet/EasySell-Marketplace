@@ -1,6 +1,6 @@
 import React from "react";
 
-import FormSample from "../components/FormSample";
+import FormSample from "../../components/FormSample";
 
 const Register = () => {
   return (

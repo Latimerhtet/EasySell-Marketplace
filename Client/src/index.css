@@ -30,10 +30,10 @@
 body {
   padding-bottom: 10px !important;
 }
+
 a.active {
-  padding: 8px;
-  background-color: #fff;
-  color: #5052b1;
+  background-color: #5052b1;
+  color: #fff;
   border-radius: 5px;
   transition: all 0.2s;
 }

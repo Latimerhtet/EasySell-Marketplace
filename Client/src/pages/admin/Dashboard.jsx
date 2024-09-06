@@ -27,7 +27,7 @@ const Dashboard = ({ products, users }) => {
   }, [products]);
   return (
     <section className="pb-10">
-      <div className="w-full flex items-center  gap-5 xs:flex-wrap">
+      <div className="w-full flex items-center  gap-5 lg:flex-nowrap flex-wrap">
         <CardComponent
           title={"Sales Percent"}
           value={`$ ${totalSales}`}
