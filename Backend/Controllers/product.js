@@ -269,3 +269,16 @@ exports.getSavedProducts = async (req, res) => {
     d;
   }
 };
+
+exports.unsaveProducts = async (req, res) => {
+  try {
+    const saveProductId = req.params.id;
+    console.log(saveProductId);
+    await SavedProducts.findByIdAndDelete({ _id: saveProductId });
+    res
+      .status(201)
+      .json({ isSuccess: true, message: "Removed saved Product!" });
+  } catch (error) {
+    return res.status(404).json({ isSuccess: false, message: error.message });
+  }
+};

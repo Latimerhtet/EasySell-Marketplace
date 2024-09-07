@@ -21,16 +21,26 @@ const SavedProducts = () => {
   }, []);
 
   return (
-    <section className="w-[90%] flex justify-center">
-      <div className="w-full flex gap-10 justify-start flex-wrap">
-        {products ? (
-          products.map((product) => (
-            <Card product={product.product_id} userDoc={product.user_id} />
-          ))
-        ) : (
-          <p>You don't have saved items!</p>
-        )}
-      </div>
+    <section className="w-[90%] h-full flex justify-center">
+      {products.length > 0 ? (
+        <div className="w-full flex gap-10 justify-start flex-wrap">
+          {products.map((product) => (
+            <Card
+              isSavePage={true}
+              product={product.product_id}
+              userDoc={product.user_id}
+              getSavedProductsFromAPI={getSavedProductsfromAPI}
+              saveProductId={product._id}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <p className="w-[300px] text-2xl text-center">
+            You don't have saved items!
+          </p>
+        </div>
+      )}
     </section>
   );
 };

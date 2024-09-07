@@ -97,3 +97,12 @@ export const getSavedProducts = async () => {
     console.log(error.message);
   }
 };
+
+export const unsaveProduct = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/unsave-product/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};

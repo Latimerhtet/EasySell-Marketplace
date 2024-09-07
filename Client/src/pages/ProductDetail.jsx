@@ -6,7 +6,8 @@ import unknownProduct from "../assets/newProduct.jpg";
 import { TagIcon } from "@heroicons/react/24/solid";
 import { CheckCircleFilled } from "@ant-design/icons";
 import { ShoppingCartIcon } from "@heroicons/react/16/solid";
-import { BookmarkIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ClockIcon } from "@heroicons/react/24/outline";
+import { formatDistanceToNow } from "date-fns";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
@@ -35,6 +36,9 @@ const ProductDetail = () => {
           alt={product.name}
           className="w-[80%] h-[250px] rounded-lg object-cover"
         />
+        {!selectedImg && (
+          <p className="text-red-600">The product doesn't include images!</p>
+        )}
         <div className="w-full flex gap-2 justify-start px-5 ">
           {product.images?.length > 0 &&
             product.images.map((image) => (
@@ -64,14 +68,18 @@ const ProductDetail = () => {
             </p>
           ))}
         </div>
-        <div className="w-full flex gap-5 items-center justify-end">
+        <p className=" flex gap-2 items-center">
+          <ClockIcon className="w-5 " />
+          <span className="font-bold">{product.usagePeriod}</span>
+        </p>
+        <div className="w-full flex gap-5 items-center justify-start">
           <button className="flex gap-1 items-center bg-[#5052b1] p-2 rounded-lg text-white">
             <span> Add to Cart</span> <ShoppingCartIcon className="w-6" />
           </button>
-          <button className="flex gap-1 items-center bg-[#5052b1] p-2 rounded-lg text-white">
+          {/* <button className="flex gap-1 items-center bg-[#5052b1] p-2 rounded-lg text-white">
             <span>Save</span>
             <BookmarkIcon className="w-6" />
-          </button>
+          </button> */}
         </div>
       </div>
     </section>
@@ -79,3 +87,5 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+// formatDistanceToNow(new Date(product.usagePeriod));

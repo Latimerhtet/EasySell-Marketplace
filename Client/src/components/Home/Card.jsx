@@ -1,11 +1,21 @@
 import React from "react";
 import unknownProduct from "../../assets/newProduct.jpg";
 import { ShoppingCartIcon } from "@heroicons/react/16/solid";
-import { BookmarkIcon, UserIcon } from "@heroicons/react/24/outline";
+import {
+  BookmarkIcon,
+  UserIcon,
+  BookmarkSlashIcon,
+} from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { saveProducts } from "../../API/productAPI";
+import { saveProducts, unsaveProduct } from "../../API/productAPI";
 import { message } from "antd";
-const Card = ({ product, userDoc }) => {
+const Card = ({
+  product,
+  userDoc,
+  isSavePage,
+  getSavedProductsFromAPI,
+  saveProductId,
+}) => {
   console.log(product.name);
   const saveProductHandler = async () => {
     try {
@@ -13,6 +23,20 @@ const Card = ({ product, userDoc }) => {
       if (!response.isSuccess) {
         throw new Error(response.message);
       } else {
+        message.success(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  const unsaveProductHandler = async () => {
+    try {
+      const response = await unsaveProduct(saveProductId);
+      if (!response.isSuccess) {
+        throw new Error(response.message);
+      } else {
+        getSavedProductsFromAPI();
         message.success(response.message);
       }
     } catch (error) {
@@ -28,10 +52,17 @@ const Card = ({ product, userDoc }) => {
       />
       <div className="w-full flex justify-between items-center px-4">
         <p className=" font-bold text-base  ">{product.name?.toUpperCase()}</p>
-        <BookmarkIcon
-          className="w-5 cursor-pointer"
-          onClick={saveProductHandler}
-        />
+        {!isSavePage ? (
+          <BookmarkIcon
+            className="w-5 cursor-pointer"
+            onClick={saveProductHandler}
+          />
+        ) : (
+          <BookmarkSlashIcon
+            className="w-5 cursor-pointer"
+            onClick={unsaveProductHandler}
+          />
+        )}
       </div>
       <p className="text-center text-xs self-start px-4">
         {product.description.length < 35

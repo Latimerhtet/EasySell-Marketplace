@@ -85,9 +85,17 @@ router.post(
   productControllers.saveProducts
 );
 
+// GET / getting saved products
 router.get(
   "/getSavedProducts",
   authMiddleware,
   productControllers.getSavedProducts
+);
+
+// DELETE / remove save product
+router.delete(
+  "/unsave-product/:id",
+  authMiddleware,
+  productControllers.unsaveProducts
 );
 module.exports = router;

@@ -49,7 +49,7 @@ const Profile = () => {
     },
     {
       key: "2",
-      label: "General",
+      label: "Profile",
       children: <General />,
     },
     {
