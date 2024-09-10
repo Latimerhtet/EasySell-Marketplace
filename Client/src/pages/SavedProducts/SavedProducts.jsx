@@ -21,9 +21,12 @@ const SavedProducts = () => {
   }, []);
 
   return (
-    <section className="w-[90%] h-full flex justify-center">
+    <section className="w-full p-5 flex flex-col">
+      <p className="text-2xl text-left mb-4 font-bold text-[#5052b1]">
+        Saved Products List
+      </p>
       {products.length > 0 ? (
-        <div className="w-full flex gap-10 justify-start flex-wrap">
+        <div className="max-w-6xl flex  gap-5 justify-start flex-wrap">
           {products.map((product) => (
             <Card
               isSavePage={true}
@@ -35,8 +38,8 @@ const SavedProducts = () => {
           ))}
         </div>
       ) : (
-        <div className="flex justify-center">
-          <p className="w-[300px] text-2xl text-center">
+        <div className="flex justify-start">
+          <p className="w-[300px] text-2xl text-left text-red-400">
             You don't have saved items!
           </p>
         </div>

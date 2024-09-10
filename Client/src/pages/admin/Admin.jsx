@@ -14,17 +14,31 @@ import {
   BellAlertIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
+import Notifications from "./Notifications";
+import { getAllNotification } from "../../API/notification";
 const Admin = () => {
   const [activeTapKey, setActiveTapKey] = useState("1");
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [notis, setNotis] = useState([]);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-  const getAllProductsForAdmin = async () => {
+
+  // Pagination for Products page of ADMIN
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageAmount, setPageAmount] = useState(8);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [pendingProducts, setPendingProducts] = useState(0);
+  const getAllProductsForAdmin = async (pageNo = 1, perPage = 8) => {
     try {
-      const products = await getAllProducts();
+      const products = await getAllProducts(pageNo, perPage);
       if (products.isSuccess) {
         setProducts(products.products);
+        setCurrentPage(products.currentPage);
+        setTotalPages(products.totalPages);
+        setTotalProducts(products.totalProducts);
+        setPendingProducts(products.pendingProducts);
       } else {
         throw new Error(products?.message);
       }
@@ -45,6 +59,18 @@ const Admin = () => {
       message.error(error.message);
     }
   };
+  const getNotis = async () => {
+    try {
+      const response = await getAllNotification();
+      if (!response.isSuccess) {
+        throw new Error(response.message);
+      }
+      console.log(response.notifications);
+      setNotis(response.notifications);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const isAdmin = () => {
     if (user.user.role !== "admin") {
       navigate("/");
@@ -54,6 +80,7 @@ const Admin = () => {
     isAdmin();
     getAllProductsForAdmin();
     getAllUsersForAdmin();
+    getNotis();
   }, [activeTapKey]);
   const items = [
     {
@@ -64,6 +91,8 @@ const Admin = () => {
           products={products}
           getAllProducts={getAllProductsForAdmin}
           users={users}
+          totalProductsCount={totalProducts}
+          pendingProducts={pendingProducts}
         />
       ),
       icon: <ChartBarIcon className="w-6 inline m-0" />,
@@ -72,7 +101,15 @@ const Admin = () => {
       key: "2",
       label: "Manage Products",
       children: (
-        <Products products={products} getAllProducts={getAllProductsForAdmin} />
+        <Products
+          products={products}
+          getAllProducts={getAllProductsForAdmin}
+          totalProducts={totalProducts}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageAmount={pageAmount}
+        />
       ),
       icon: <ClipboardDocumentListIcon className="w-6 inline m-0" />,
     },
@@ -94,7 +131,7 @@ const Admin = () => {
     {
       key: "5",
       label: "Notification",
-      children: <p>Notifications</p>,
+      children: <Notifications notis={notis} />,
       icon: <BellAlertIcon className="w-6 inline m-0" />,
     },
   ];

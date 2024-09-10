@@ -1,16 +1,32 @@
 const Product = require("../models/product");
 
 exports.getAllProducts = async (req, res, next) => {
+  let pageNo = parseInt(req.query.pageNo) || 1;
+  let perPage = parseInt(req.query.perPage) || 6;
+
   try {
     const products = await Product.find({ status: "approved" })
       .populate("seller", "name")
+      .skip((pageNo - 1) * perPage)
+      .limit(perPage)
       .sort({
         createdAt: -1,
       });
+
+    const totalProducts = await Product.find({
+      status: "approved",
+    }).countDocuments();
+    const totalPages = Math.ceil(totalProducts / perPage);
     if (!products) {
       throw new Error("Something went wrong with getting products!");
     }
-    res.status(200).json({ isSuccess: true, products });
+    res.status(200).json({
+      isSuccess: true,
+      products,
+      currentPage: pageNo,
+      totalPages,
+      totalProducts,
+    });
   } catch (error) {
     res.status(422).json({ isSuccess: false, message: "Something went wrong" });
   }

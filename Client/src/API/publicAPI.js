@@ -1,8 +1,11 @@
 import { axiosInstance } from "./axiosInstance";
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (pageNo, perPage) => {
+  console.log(pageNo, perPage);
   try {
-    const response = await axiosInstance.get("/api/products");
+    const response = await axiosInstance.get(
+      `/api/products?perPage=${perPage}&pageNo=${pageNo}`
+    );
     console.log(response);
     return response.data;
   } catch (error) {}

@@ -85,7 +85,7 @@ export const saveProducts = async (id) => {
     const response = await axiosInstance.post(`/save-product/${id}`);
     return response.data;
   } catch (error) {
-    console.log(error.message);
+    return error.response.data;
   }
 };
 

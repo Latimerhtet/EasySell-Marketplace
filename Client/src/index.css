@@ -30,7 +30,9 @@
 body {
   padding-bottom: 10px !important;
 }
-
+input {
+  outline: none !important;
+}
 a.active {
   background-color: #5052b1;
   color: #fff;

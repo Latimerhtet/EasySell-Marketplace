@@ -5,7 +5,12 @@ import { UserGroupIcon } from "@heroicons/react/24/outline";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import CustomAreaChart from "../../components/dashboard/CustomAreaChart";
 import CustomBarList from "../../components/dashboard/CustomBarList";
-const Dashboard = ({ products, users }) => {
+const Dashboard = ({
+  products,
+  users,
+  totalProductsCount,
+  pendingProducts,
+}) => {
   const [totalSales, setTotalSales] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -41,8 +46,14 @@ const Dashboard = ({ products, users }) => {
           icon={UserGroupIcon}
         />
         <CardComponent
-          title={"Sell Products"}
-          value={totalProducts}
+          title={"Total Products"}
+          value={totalProductsCount}
+          option={"Products"}
+          icon={ShoppingBagIcon}
+        />
+        <CardComponent
+          title={"Pending Products"}
+          value={pendingProducts}
           option={"Products"}
           icon={ShoppingBagIcon}
         />

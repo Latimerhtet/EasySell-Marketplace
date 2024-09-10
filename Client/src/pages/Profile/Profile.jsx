@@ -5,12 +5,15 @@ import ManageProduct from "./ManageProduct";
 import { useNavigate } from "react-router-dom";
 import General from "./General";
 import { getAllproducts } from "../../API/productAPI";
+import Notifications from "./Notifications";
+import { getAllNotification } from "../../API/notification";
 const Profile = () => {
   const [activeTapKey, setActiveTapKey] = useState("1");
   const [sellerProducts, setSellerProducts] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [uploadMode, setUploadMode] = useState(false);
   const [editProductId, setEditProductId] = useState("");
+  const [notis, setNotis] = useState([]);
 
   const getProducts = async () => {
     try {
@@ -25,12 +28,25 @@ const Profile = () => {
       console.log(error);
     }
   };
+  const getNotis = async () => {
+    try {
+      const response = await getAllNotification();
+      if (!response.isSuccess) {
+        throw new Error(response.message);
+      }
+      console.log(response.notifications);
+      setNotis(response.notifications);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
     if (activeTapKey !== "3") {
       setEditMode(false);
       setEditProductId(null);
     }
     getProducts();
+    getNotis();
   }, [activeTapKey]);
   const items = [
     {
@@ -69,8 +85,17 @@ const Profile = () => {
     },
     {
       key: "4",
-      label: "Notification",
-      children: <p>Notifications</p>,
+      label: (
+        <p>
+          Notifications{" "}
+          {notis.length > 0 && (
+            <span className="p-1 px-2 rounded-full bg-slate-200 text-red-700">
+              {notis.length}
+            </span>
+          )}
+        </p>
+      ),
+      children: <Notifications notis={notis} />,
     },
   ];
 
@@ -84,7 +109,7 @@ const Profile = () => {
         activeKey={activeTapKey}
         onChange={(key) => activeKeyChangeEventHandler(key)}
         items={items}
-        tabPosition="left"
+        tabPosition="top"
         style={{
           width: "100%",
           height: 220,

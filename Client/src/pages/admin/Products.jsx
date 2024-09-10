@@ -1,9 +1,17 @@
 import moment from "moment";
 import React from "react";
 import { setProductStatus } from "../../API/adminAPI";
-import { message } from "antd";
+import { Pagination, message } from "antd";
 
-const Products = ({ products, getAllProducts }) => {
+const Products = ({
+  products,
+  getAllProducts,
+  totalProducts,
+  totalPages,
+  currentPage,
+  setCurrentPage,
+  pageAmount,
+}) => {
   const statusHandler = async (productId, productStatus) => {
     try {
       const response = await setProductStatus({
@@ -28,6 +36,10 @@ const Products = ({ products, getAllProducts }) => {
   };
   const rollbackHandler = async (productId) => {
     await statusHandler(productId, "pending");
+  };
+  const paginationOnChange = (page, pageSize) => {
+    setCurrentPage(page);
+    getAllProducts(page, pageSize);
   };
   return (
     <section>
@@ -141,6 +153,15 @@ const Products = ({ products, getAllProducts }) => {
             )}
           </tbody>
         </table>
+      </div>
+      <div className="mt-7">
+        <Pagination
+          align="center"
+          pageSize={pageAmount}
+          current={currentPage}
+          onChange={paginationOnChange}
+          total={totalProducts}
+        />
       </div>
     </section>
   );

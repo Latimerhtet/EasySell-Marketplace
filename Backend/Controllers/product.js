@@ -238,10 +238,18 @@ exports.saveProducts = async (req, res) => {
   try {
     const { id } = req.params;
     const user_id = req.userId;
+
+    const isExistedSavedProduct = await SavedProducts.findOne({
+      $and: [{ user_id }, { product_id: id }],
+    });
+
+    if (isExistedSavedProduct) {
+      throw new Error("You have already saved this item!");
+    }
     await SavedProducts.create({ product_id: id, user_id });
     res.status(201).json({ isSuccess: true, message: " Product is saved!" });
   } catch (error) {
-    return res.status(400).json({ isSuccess: false, message: error.message });
+    return res.status(405).json({ isSuccess: false, message: error.message });
   }
 };
 
@@ -258,7 +266,6 @@ exports.getSavedProducts = async (req, res) => {
     if (!productsDoc) {
       throw new Error("There is no products saved!");
     }
-    console.log(productsDoc);
     res.status(200).json({
       isSuccess: true,
       message: "Saved Products sent",
@@ -266,7 +273,6 @@ exports.getSavedProducts = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({ isSuccess: false, message: error.message });
-    d;
   }
 };
 
