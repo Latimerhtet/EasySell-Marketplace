@@ -37,12 +37,17 @@ const Notifications = ({ notis }) => {
                   </p>
                 </div>
                 <div className="h-[1px] w-full bg-slate-300"></div>
-                <Link
-                  className="text-green-400 text-right underline"
-                  to={`/productDetail/${noti.product_id}`}
-                >
-                  View Bids
-                </Link>
+                <div>
+                  <button className="text-green-400 text-right underline">
+                    View Bids
+                  </button>
+                  <Link
+                    className="text-green-400 text-right underline"
+                    to={`/productDetail/${noti.product_id}`}
+                  >
+                    View Bids
+                  </Link>
+                </div>
               </div>
             );
           })}

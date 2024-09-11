@@ -55,7 +55,7 @@ const Card = ({
     return savedProducts.some((p) => p.product_id._id === product._id);
   };
   return (
-    <div className="w-1/4 flex flex-col gap-4 items-center bg-slate-100 rounded-lg py-4 px-2 shadow-lg ">
+    <div className="w-[250px] flex flex-col gap-4 items-center bg-slate-100 rounded-lg py-4 px-2 shadow-lg ">
       <Link to={`/productDetail/${product._id}`}>
         <img
           src={product.images.length ? product.images[0] : unknownProduct}

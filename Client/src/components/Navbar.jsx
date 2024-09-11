@@ -34,7 +34,7 @@ const Navbar = () => {
       </Link>
       <div className="flex gap-3 items-center ">
         <NavLink className="p-2  text-[#5052b1]" to={"/"}>
-          <HomeIcon className="w-6" />
+          Home
         </NavLink>
         <NavLink className="p-2  text-[#5052b1]" to={"/contact"}>
           Contact

@@ -50,7 +50,7 @@ const HeroSection = ({ setProducts }) => {
           <input
             value={searchKey}
             type="text"
-            className="w-full border-none px-5 py-2 bg-slate-300 outline-none rounded-md "
+            className="w-full border-none px-5 py-2 bg-slate-200 outline-none rounded-md "
             onChange={(e) => setSearchKey(e.target.value)}
           />
           <MagnifyingGlassIcon

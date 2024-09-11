@@ -122,10 +122,8 @@ exports.getOldProduct = async (req, res, next) => {
 
 exports.deleteProduct = async (req, res, next) => {
   try {
-    console.log(req.userId);
     const productDoc = await Product.findOne({ _id: req.params.id });
-    console.log(productDoc);
-    console.log(productDoc.seller);
+
     //https://res.cloudinary.com/due9ulwjn/image/upload/v1725256869/hdp9lrtwaombkrpar7wl.jpg
     if (req.userId.toString() !== productDoc.seller.toString()) {
       throw new Error("Can't delete the product!");
@@ -167,6 +165,12 @@ exports.upload = async (req, res, next) => {
   const productId = req.body.product_id;
   const secureUrlArr = [];
   try {
+    const productDoc = await Product.findOne({ _id: productId });
+
+    if (req.userId.toString() !== productDoc.seller.toString()) {
+      throw new Error("Can't delete the product!");
+    }
+
     productImages.forEach((img) => {
       cloudinary.uploader.upload(img.path, async (err, result) => {
         if (!err) {
@@ -196,6 +200,12 @@ exports.upload = async (req, res, next) => {
 exports.getProductImages = async (req, res, next) => {
   const id = req.params.id;
   try {
+    const productDoc = await Product.findOne({ _id: id });
+
+    if (req.userId.toString() !== productDoc.seller.toString()) {
+      throw new Error("Can't delete the product!");
+    }
+
     const productImages = await Product.findById(id).select("images");
     if (!productImages) {
       throw new Error("There is no images for this post!");
@@ -214,6 +224,11 @@ exports.getProductImages = async (req, res, next) => {
 exports.deleteProductImages = async (req, res) => {
   try {
     const id = req.params.productId;
+    const productDoc = await Product.findOne({ _id: id });
+
+    if (req.userId.toString() !== productDoc.seller.toString()) {
+      throw new Error("Can't delete the product!");
+    }
     const decodeImageToDelete = decodeURIComponent(req.params.imageToDelete);
     await Product.findByIdAndUpdate(id, {
       $pull: { images: decodeImageToDelete },

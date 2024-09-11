@@ -95,7 +95,7 @@ const Profile = () => {
           )}
         </p>
       ),
-      children: <Notifications notis={notis} />,
+      children: <Notifications notis={notis} getNotis={getNotis} />,
     },
   ];
 

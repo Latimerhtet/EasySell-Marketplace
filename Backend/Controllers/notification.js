@@ -34,3 +34,51 @@ exports.getNotificaions = async (req, res) => {
       .json({ isSuccess: false, message: "Error creating Notification!" });
   }
 };
+
+exports.deleteNotification = async (req, res) => {
+  try {
+    // this is the notification id
+    const { id } = req.params;
+    await Notification.findByIdAndDelete(id);
+    res.status(201).json({ isSuccess: true, message: "Deletion Successful!" });
+  } catch (error) {
+    res
+      .status(406)
+      .json({ isSuccess: false, message: "Error deleting notification!" });
+  }
+};
+
+exports.deleteAllNotifications = async (req, res) => {
+  try {
+    // this is the owner id
+    const { id } = req.params;
+    console.log(id);
+    await Notification.deleteMany({ owner_id: id });
+
+    res.status(201).json({ isSuccess: true, message: "Deletion Successful!" });
+  } catch (error) {
+    res
+      .status(406)
+      .json({ isSuccess: false, message: "Error deleting notification!" });
+  }
+};
+
+exports.markAsRead = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const noti = await Notification.findById(id);
+    if (!noti) {
+      throw new Error("Notification is not found!");
+    }
+    noti.isRead = true;
+    await noti.save();
+
+    res
+      .status(201)
+      .json({ isSuccess: true, message: "Message is marked as read!" });
+  } catch (error) {
+    res
+      .status(422)
+      .json({ isSuccess: false, message: "Action is not successful!" });
+  }
+};

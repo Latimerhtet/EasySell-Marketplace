@@ -126,4 +126,24 @@ router.get(
   authMiddleware,
   notificationControllers.getNotificaions
 );
+
+// DELETE not
+router.delete(
+  "/deleteNoti/:id",
+  authMiddleware,
+  notificationControllers.deleteNotification
+);
+
+// DELETE ALL
+router.delete(
+  "/deleteAllNotis/:id",
+  authMiddleware,
+  notificationControllers.deleteAllNotifications
+);
+
+router.post(
+  "/markAsRead/:id",
+  authMiddleware,
+  notificationControllers.markAsRead
+);
 module.exports = router;
