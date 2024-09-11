@@ -30,7 +30,7 @@ const fileFilterConfig = (req, file, cb) => {
   }
 };
 app.use(bodyParser.json());
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "https://easysell-marketplace-client.onrender.com" }));
 app.use(
   multer({ storage: storageConfig, fileFilter: fileFilterConfig }).array(
     "product_images"
